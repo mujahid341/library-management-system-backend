@@ -10,7 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         "com.library.management.repository",
         "com.library.management.domain",
         "com.library.management.service",
-        "com.library.management.endpoints"
+        "com.library.management.endpoints",
+        "com.library.management.common"
 })
 @EnableJpaRepositories(basePackages = "com.library.management.repository")
 @EntityScan(basePackages = "com.library.management.domain")  // For Book entity
