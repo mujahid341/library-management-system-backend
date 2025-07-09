@@ -1,5 +1,6 @@
 package com.library.management.service.impl;
 
+import com.library.management.common.exception.BookNotFoundException;
 import com.library.management.domain.Book;
 import com.library.management.repository.BookRepository;
 import com.library.management.service.BookService;
@@ -20,7 +21,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book addBook(Book book) {
         try {
-
             Optional<Book> existingBookOpt = bookRepository.findByIsbn(book.getIsbn());
             if (existingBookOpt.isPresent()) {
                 Book existingBook = existingBookOpt.get();
@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getBookByIsbn(String ISBN) {
         return bookRepository.findByIsbn(ISBN)
-                .orElseThrow(() -> new RuntimeException("Book not found with ISBN: " + ISBN));
+                .orElseThrow(() -> new BookNotFoundException("Book not found with ISBN: " + ISBN));
     }
 
     @Override
@@ -56,8 +56,7 @@ public class BookServiceImpl implements BookService {
             logger.info("Book updated successfully: {}", existingBook);
             return bookRepository.save(existingBook);
         } else {
-            logger.error("Book not found with ISBN: {}", ISBN);
-            throw new RuntimeException("Book not found with ISBN: " + ISBN);
+            throw new BookNotFoundException("Book not found with ISBN: " + ISBN);
         }
     }
 
@@ -71,7 +70,7 @@ public class BookServiceImpl implements BookService {
             return existingBook;
         } else {
             logger.error("Book not found with ISBN: {}", ISBN);
-            throw new RuntimeException("Book not found with ISBN: " + ISBN);
+            throw new BookNotFoundException("Book not found with ISBN: " + ISBN);
         }
     }
 
